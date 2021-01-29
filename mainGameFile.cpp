@@ -1,25 +1,19 @@
-//Подключение нужных библиотек(игра написана на OpenGL)
 #include <time.h>
 #include <GL/glut.h>
 
-
-//Задаем характеристики клеточек
 int N = 30, M = 20;
 int Scale = 25;
-
 int w = Scale * N;
 int h = Scale * M;
 
-//Параметры змейки
 int dir, num = 4;
 
-//Змейка
 struct {
 	int x;
 	int y;
 } s[100];
 
-//Еда
+
 class Food
 {
 public:
@@ -31,15 +25,14 @@ public:
 		y = rand() % M;
 	}
 
-	//Отрисовка Еды
 	void DrawFood()
 	{
 		glColor3f(0.0, 1.0, 1.0);
 		glRectf(x * Scale, y * Scale, (x + 1) * Scale, (y + 1) * Scale);
 	}
+	
 } m[10];
 
-//Рисовка клеточек
 void DrawField()
 {
 	glColor3f(1.5, 1.1, 1.0);
@@ -58,16 +51,15 @@ void DrawField()
 	glEnd();
 }
 
-//Перемещение змейки
+
 void Tick()
 {
-	//Остальные элементы
 	for (int i = num; i > 0; --i) {
 		s[i].x = s[i - 1].x;
 		s[i].y = s[i - 1].y;
 	}
 
-	//Голова
+
 	if (dir == 0) s[0].y += 1;
 	if (dir == 1) s[0].x -= 1;
 	if (dir == 2) s[0].x += 1;
@@ -82,7 +74,6 @@ void Tick()
 		}
 	}
 
-	//Проверка на выход за границу карты
 	if (s[0].x > N) dir = 1; if (s[0].x < 0) dir = 2;
 	if (s[0].y > M) dir = 3; if (s[0].y < 0) dir = 0;
 
@@ -95,7 +86,6 @@ void Tick()
 	}
 }
 
-//Отрисовка змейки
 void DrawSnake()
 {
 	glColor3f(1.0, 0.0, 1.0);
@@ -108,7 +98,7 @@ void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	
-	//Вывод еды
+	//Г‚Г»ГўГ®Г¤ ГҐГ¤Г»
 	for (int i = 0; i < 10; i++)
 	{
 		m[i].DrawFood();
@@ -116,11 +106,11 @@ void display()
 
 	DrawField();
 	DrawSnake();
-	//Вывод на экран
+	//Г‚Г»ГўГ®Г¤ Г­Г  ГЅГЄГ°Г Г­
 	glFlush();
 }
 
-//Задает анимацию
+
 void timer(int = 0) {
 	display();
 
@@ -129,7 +119,7 @@ void timer(int = 0) {
 	glutTimerFunc(500, timer, 0);
 }
 
-//Управление
+
 void MyKeyboard(int key, int a, int b)
 {
 	switch (key)
@@ -147,10 +137,10 @@ int main(int argc, char **argv)
 	{
 		m[i].New();
 	}
-	//Начальные координаты
+
 	s[0].x = 10;
 	s[0].y = 10;
-	//Подключение OpenGl
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowSize(w, h);
